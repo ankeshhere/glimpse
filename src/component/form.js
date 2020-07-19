@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import { withStyles  } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { addUser } from '../database/userFunctions';
+import { addUser , uploadFile} from '../database/userFunctions';
 
 
 const useStyles = theme => ({
@@ -25,7 +25,8 @@ class Form extends Component{
         this.state = {
             name: '',
             age:'',
-            place:''
+            place:'',
+            selectedFile:''
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -62,6 +63,28 @@ class Form extends Component{
 
     }
 
+    onFileUpload = (event) => {
+        event.preventDefault();
+        // const file = event.target.files[0]
+        var formData = new FormData()
+        formData.append("file",this.state.selectedFile)
+    
+        uploadFile(formData).then(res => {
+            if (!res.error) {
+                // if(true){
+                alert("Success")
+            }
+        })
+        }
+
+
+        onFileChange = event => { 
+     
+            // Update the state 
+            this.setState({ selectedFile: event.target.files[0] }); 
+           
+          }; 
+
 
 
     render(){
@@ -82,6 +105,15 @@ class Form extends Component{
                     <Button onClick={this.handleSubmit} variant="contained" color="primary">
                         Submit
                     </Button>
+                </Box>
+                <Box display="flex" p={2} mx = {6}>
+                <input type="file" onChange={this.onFileChange} /> 
+                </Box>
+                <Box display="flex" p={2} mx = {6}>
+                <button onClick={this.onFileUpload}> 
+                
+                  Upload! 
+                </button> 
                 </Box>
             </Box>   
         </form>

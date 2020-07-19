@@ -14,3 +14,15 @@ export const addUser = user => {
         })
 }
 
+export const uploadFile = file => {
+    return axios
+        .post("http://localhost:5000/upload", file, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+        })
+        .then(response => {
+            return response
+        })
+}
+
