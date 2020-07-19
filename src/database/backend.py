@@ -33,13 +33,15 @@ def addUser():
 @app.route('/upload', methods = ['POST'])
 def upload():
     file = request.files['file']
-    file.save(file.filename)
-    data=pd.read_excel(file.filename)
+    file_name = file.filename.strip('.xlsx').replace(' ','_')
+    print(file_name)
+    file.save(file_name)
+    data=pd.read_excel(file_name)
     data_list = data.to_json(orient='records')
     data_list = json.loads(data_list)
-    user=client['glimpse']['user']
+    uploaded_file_data=client['glimpse'][file_name]
     # print(data_list)
-    response = user.insert_many(data_list)
+    response = uploaded_file_data.insert_many(data_list)
     
     if response:
         print(response.inserted_ids)
